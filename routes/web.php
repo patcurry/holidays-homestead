@@ -60,6 +60,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     // link work days between dates to holidays
     //
+    //
+    $router->put('employees/{id}/take-vacation', ['uses' => 'EmployeeController@takeVacation']);
 
 });
 

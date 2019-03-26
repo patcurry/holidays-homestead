@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Employee;
 use Illuminate\Http\Request;
 
+
+use Datetime;
+use App\CustomClass\DateTools;
+
 class EmployeeController extends Controller
 {
 
@@ -71,5 +75,24 @@ class EmployeeController extends Controller
         return response()->json($employee, 200);
     }
 
+    public function takeVacation($id, Request $request)
+    {
+
+        // make new DateTools class
+        $dt = new DateTools;
+
+        // get employee
+        $employee = Employee::findOrFail($id);
+
+        // get holiday dates from the request
+        // calculate the number of work days between the dates
+        $days = $dt->WorkDays($request->from, $request->to);
+
+        // subtract work days from paid holidays, the holidays field
+        $employee->decrement('holidays', $days);
+
+        return response()->json($employee, 200);
+
+    }
 
 }
